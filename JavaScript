@@ -1,0 +1,26 @@
+document.addEventListener("DOMContentLoaded", function() {
+  var refreshButton = document.getElementById("refresh-btn");
+  var temperatureSpan = document.getElementById("temperature");
+  var humiditySpan = document.getElementById("humidity");
+  var voltageSpan = document.getElementById("voltage");
+  var currentSpan = document.getElementById("current");
+  var brightnessSpan = document.getElementById("brightness");
+
+  refreshButton.addEventListener("click", function() {
+    // Récupérer les données du serveur
+    var request = new XMLHttpRequest();
+    request.open("GET", "/data", true);
+    request.onload = function() {
+      if (request.status == 200) {
+        // Mettre à jour les valeurs des capteurs
+        var data = JSON.parse(request.responseText);
+        temperatureSpan.innerHTML = data.temperature + "°C";
+        humiditySpan.innerHTML = data.humidity + "%";
+        voltageSpan.innerHTML = data.voltage + "V";
+        currentSpan.innerHTML = data.current + "A";
+        brightnessSpan.innerHTML = data.brightness + " lx";
+      }
+    };
+    request.send();
+  });
+});
